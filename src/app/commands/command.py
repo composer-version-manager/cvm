@@ -1,3 +1,7 @@
-class Command:
-    def __init__(self):
-        print('Hello world')
+from abc import ABC, abstractmethod
+
+
+class Command(ABC):
+    @abstractmethod
+    def handle(self) -> None:
+        pass
