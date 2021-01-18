@@ -4,17 +4,19 @@ from src.app.commands.command import Command
 
 
 class InstallCommand(Command):
-    def handle(self):
-        print("Init command handled.")
+    NAME = 'install'
+
+    def exec(self):
+        print("Install command executed.")
 
     @staticmethod
     def define_signature(parser: Action):
-        use_parser = parser.add_parser(
-            'use',
-            help="Install and use a specific version of Composer."
+        install_parser = parser.add_parser(
+            InstallCommand.NAME,
+            help='Install a version of Composer without switching to it.'
         )
-        use_parser.add_argument(
+        install_parser.add_argument(
             'version',
             nargs=1,
-            help='Composer version to use.'
+            help='Composer version to install.'
         )

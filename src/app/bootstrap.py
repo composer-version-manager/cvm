@@ -1,10 +1,22 @@
 import argparse
-from colorama import Fore
-from argparse_color_formatter import ColorHelpFormatter
+from typing import Optional
 
+from argparse_color_formatter import ColorHelpFormatter
+from colorama import Fore
+
+from src.app.commands.command import Command
 from src.app.commands.install_command import InstallCommand
 from src.app.commands.use_command import UseCommand
 from src.app.helpers.helpers import colored_fore
+
+COMMANDS = {
+    UseCommand.NAME: UseCommand,
+    InstallCommand.NAME: InstallCommand
+}
+
+
+def get_command_by_name(name: str) -> Optional[Command]:
+    return COMMANDS.get(name, None)()
 
 
 def run():
@@ -14,10 +26,10 @@ def run():
     )
 
     subparsers = parser.add_subparsers(dest='command')
-
-    UseCommand.define_signature(subparsers)
-    InstallCommand.define_signature(subparsers)
+    for command in COMMANDS.values():
+        command.define_signature(subparsers)
 
     args = parser.parse_args()
 
-    print(args)
+    command = get_command_by_name(args.command)
+    command.exec()
