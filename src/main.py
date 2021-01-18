@@ -1,4 +1,3 @@
-from app.bootstrap import run
 import sys
 
 MIN_PYTHON = (3, 0)
@@ -9,4 +8,6 @@ def check_minimum_version():
         sys.exit("Python %s.%s or later is required.\n" % MIN_PYTHON)
 
 
-run()
+from src.app import bootstrap
+
+bootstrap.run()
