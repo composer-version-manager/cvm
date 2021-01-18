@@ -5,7 +5,7 @@ from src.app.commands.command import Command
 
 class ScanCommand(Command):
     NAME = 'scan'
-    DESCRIPTION = 'Use .cvm_config from the current directory if present.'
+    DESCRIPTION = 'If present use .cvm_config from the current or specified directory.'
 
     def exec(self, args: Namespace):
         print("Scan command executed.")

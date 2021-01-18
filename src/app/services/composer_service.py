@@ -1,5 +1,7 @@
 import sys
+import os
 
+from src.app.services.cache_service import CacheService
 from src.app.services.github_service import GitHubService
 import logging
 
@@ -24,9 +26,10 @@ class ComposerService:
 
         return False
 
-    def cache_exists(self, tag_name: str) -> bool:
+    @staticmethod
+    def cached_version_exists(tag_name: str) -> bool:
 
-        return True
+        return os.path.exists(CacheService.CACHE_DIR + "/{}".format(tag_name))
 
     def install_version(self, tag_name: str) -> bool:
         if not self.tag_exists(tag_name):
@@ -38,7 +41,7 @@ class ComposerService:
         return True
 
     def use_version(self, tag_name: str, check_exists: bool = True) -> bool:
-        if check_exists and not self.cache_exists(tag_name):
+        if check_exists and not ComposerService.cached_version_exists(tag_name):
             return False
 
         # TODO: Use cached version if exists

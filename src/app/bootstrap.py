@@ -1,4 +1,6 @@
 import argparse
+import logging
+import sys
 from typing import Optional
 
 from argparse_color_formatter import ColorRawTextHelpFormatter
@@ -9,6 +11,7 @@ from src.app.commands.install_command import InstallCommand
 from src.app.commands.scan_command import ScanCommand
 from src.app.commands.use_command import UseCommand
 from src.app.helpers.helpers import colored_fore
+from src.app.services.cache_service import CacheService
 
 COMMAND_NAME = 'cvm'
 COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Author: @game-of-morgan (Morgan Wowk)')
@@ -22,10 +25,16 @@ COMMANDS = {
 
 
 def get_command_by_name(name: str) -> Optional[Command]:
-    return COMMANDS.get(name, None)()
+    command = COMMANDS.get(name, None)
+    if command is None:
+        logging.error("Command {} not found".format(name))
+        sys.exit(1)
+
+    return command()
 
 
 def run():
+    CacheService.boot_cache()
     parser = argparse.ArgumentParser(
         colored_fore(Fore.LIGHTGREEN_EX, COMMAND_NAME),
         formatter_class=ColorRawTextHelpFormatter,

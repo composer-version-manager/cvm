@@ -7,8 +7,8 @@ from src.app.services.github_service import GitHubService
 
 class UseCommand(Command):
     NAME = 'use'
-    DESCRIPTION = 'Use a specific version of Composer. Defaulting to the latest-\nstable version when there is a ' \
-                  'lack of specificity.\n\n '
+    DESCRIPTION = 'Use a specific version of Composer; Defaulting to the latest stable major version when there is a ' \
+                  'lack of specificity (ie. 2). '
 
     def exec(self, args: Namespace):
         desired_version = args.version[0]
