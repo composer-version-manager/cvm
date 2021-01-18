@@ -42,4 +42,4 @@ def run():
     args = parser.parse_args()
 
     command = get_command_by_name(args.command)
-    command.exec()
+    command.exec(args)

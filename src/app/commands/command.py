@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from argparse import Action
+from argparse import Action, Namespace
 
 
 class Command(ABC):
     @abstractmethod
-    def exec(self) -> None:
+    def exec(self, args: Namespace) -> None:
         pass
 
     @staticmethod
