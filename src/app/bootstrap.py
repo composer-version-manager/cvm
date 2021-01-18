@@ -11,7 +11,7 @@ from src.app.commands.use_command import UseCommand
 from src.app.helpers.helpers import colored_fore
 
 COMMAND_NAME = 'cvm'
-COMMAND_DESC = 'Composer Version Manager'
+COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Author: @game-of-morgan (Morgan Wowk)')
 COMMAND_EPILOG = 'https://github.com/game-of-morgan/cvm\n\nSupport this project by giving it a GitHub star ⭐️'
 
 COMMANDS = {
@@ -32,8 +32,10 @@ def run():
         description=colored_fore(Fore.LIGHTYELLOW_EX, COMMAND_DESC),
         epilog=colored_fore(Fore.YELLOW, COMMAND_EPILOG)
     )
+    parser._positionals.title = 'Available commands'
+    parser._optionals.title = 'Optional arguments'
 
-    subparsers = parser.add_subparsers(dest='command')
+    subparsers = parser.add_subparsers(dest='command', metavar='')
     for command in COMMANDS.values():
         command.define_signature(subparsers)
 

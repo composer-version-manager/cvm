@@ -5,7 +5,7 @@ from src.app.commands.command import Command
 
 class UseCommand(Command):
     NAME = 'use'
-    DESCRIPTION = 'Install and use a specific version of Composer.'
+    DESCRIPTION = 'Use a specific version of Composer. Defaulting to the latest-\nstable version when there is a lack of specificity.\n\n'
 
     def exec(self):
         print("Use command executed.")
@@ -16,5 +16,6 @@ class UseCommand(Command):
         use_parser.add_argument(
             'version',
             nargs=1,
-            help='Composer version to use.'
+            help='Composer version to use.',
+            metavar='{version}'
         )
