@@ -4,3 +4,8 @@ venv
 # Environment
 .idea
 
+.history
+Composer_Version_Manager.egg-info
+build
+dist
+.DS_Store
