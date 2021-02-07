@@ -1,8 +1,8 @@
 import sys
 import os
 
-from src.app.services.cache_service import CacheService
-from src.app.services.github_service import GitHubService
+from cvm.services.cache_service import CacheService
+from cvm.services.github_service import GitHubService
 import logging
 
 

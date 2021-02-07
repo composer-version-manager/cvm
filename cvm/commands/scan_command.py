@@ -1,6 +1,6 @@
 from argparse import Action, Namespace
 
-from src.app.commands.command import Command
+from cvm.commands.command import Command
 
 
 class ScanCommand(Command):

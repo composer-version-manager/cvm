@@ -3,15 +3,17 @@ import logging
 import sys
 from typing import Optional
 
+from cvm.helpers.cli import colored_fore
 from argparse_color_formatter import ColorRawTextHelpFormatter
 from colorama import Fore
 
-from src.app.commands.command import Command
-from src.app.commands.install_command import InstallCommand
-from src.app.commands.scan_command import ScanCommand
-from src.app.commands.use_command import UseCommand
-from src.app.helpers.helpers import colored_fore
-from src.app.services.cache_service import CacheService
+from cvm.commands.command import Command
+from cvm.commands.use_command import UseCommand
+from cvm.commands.install_command import InstallCommand
+from cvm.commands.scan_command import ScanCommand
+
+from cvm.services.cache_service import CacheService
+
 
 COMMAND_NAME = 'cvm'
 COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Author: @game-of-morgan (Morgan Wowk)')
@@ -33,7 +35,7 @@ def get_command_by_name(name: str) -> Optional[Command]:
     return command()
 
 
-def run():
+def main():
     CacheService.boot_cache()
     parser = argparse.ArgumentParser(
         colored_fore(Fore.LIGHTGREEN_EX, COMMAND_NAME),

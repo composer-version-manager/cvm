@@ -1,8 +1,8 @@
 from argparse import Action, Namespace
 
-from src.app.commands.command import Command
-from src.app.services.composer_service import ComposerService
-from src.app.services.github_service import GitHubService
+from cvm.commands.command import Command
+from cvm.services.composer_service import ComposerService
+from cvm.services.github_service import GitHubService
 
 
 class InstallCommand(Command):
