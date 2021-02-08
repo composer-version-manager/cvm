@@ -11,6 +11,7 @@ from cvm.commands.command import Command
 from cvm.commands.use_command import UseCommand
 from cvm.commands.install_command import InstallCommand
 from cvm.commands.scan_command import ScanCommand
+from cvm.commands.list_command import ListCommand
 
 from cvm.services.cache_service import CacheService
 
@@ -22,7 +23,8 @@ COMMAND_EPILOG = 'https://github.com/game-of-morgan/cvm\n\nSupport this project 
 COMMANDS = {
     UseCommand.NAME: UseCommand,
     InstallCommand.NAME: InstallCommand,
-    ScanCommand.NAME: ScanCommand
+    ScanCommand.NAME: ScanCommand,
+    ListCommand.NAME: ListCommand
 }
 
 
