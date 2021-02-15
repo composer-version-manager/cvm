@@ -1,8 +1,7 @@
-import os
 import logging
+import os
 import pathlib
 import sys
-from pathlib import Path
 
 
 class CacheService:
@@ -21,7 +20,7 @@ class CacheService:
         CacheService.SETUP_DIR.mkdir(parents=True, exist_ok=True)
         
     @staticmethod
-    def get_cache_folder(folder: str) -> pathlib.Path:
+    def make_cache_folder(folder: str) -> pathlib.Path:
         fpath = CacheService.CACHE_DIR / folder
         fpath.mkdir(parents=True, exist_ok=True)
         return fpath

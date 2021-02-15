@@ -1,11 +1,12 @@
-import sys
+import logging
 import pathlib
-import requests
 import subprocess
+import sys
+
+import requests
 
 from cvm.services.cache_service import CacheService
 from cvm.services.github_service import GitHubService
-import logging
 
 
 class ComposerService:
@@ -39,7 +40,7 @@ class ComposerService:
         :return: Bool
         '''
 
-        cache_path = CacheService.CACHE_DIR / tag_name
+        cache_path = CacheService.CACHE_DIR / tag_name / 'composer'
         return cache_path.exists()
 
     def _get_setup_path(self) -> pathlib.Path:
@@ -56,24 +57,25 @@ class ComposerService:
             setup_path.write_bytes(r.content)
         return setup_path
 
-    def install_version(self, tag_name: str) -> bool:
+    def install_version(self, tag_name: str, quiet=False) -> pathlib.Path:
         if not self.tag_exists(tag_name):
             logging.error("Tag {} does not exist.".format(tag_name))
             sys.exit(1)
 
         setup_path = self._get_setup_path()
-        cache_path = CacheService.get_cache_folder(tag_name)
+        cache_path = CacheService.make_cache_folder(tag_name)
+
+        if ComposerService.cached_version_exists(tag_name):
+            return cache_path
 
         cmd = ['php', str(setup_path), f'--install-dir={str(cache_path)}', '--filename=composer', f'--version={tag_name}']
         result = subprocess.run(cmd, stdout=subprocess.PIPE, check=True)
-        print(result.stdout.decode('utf-8'))
+        if not quiet:
+            print(result.stdout.decode('utf-8'))
 
-        return True
+        return cache_path
 
-    def use_version(self, tag_name: str, check_exists: bool = True) -> bool:
-        if check_exists and not ComposerService.cached_version_exists(tag_name):
-            return False
+    def use_version(self, tag_name: str) -> str:
+        install_path = self.install_version(tag_name, quiet=True)
 
-        # TODO: Use cached version if exists
-
-        return True
+        return str(install_path)
