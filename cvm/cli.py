@@ -3,18 +3,17 @@ import logging
 import sys
 from typing import Optional
 
-from cvm.helpers.cli import colored_fore
 from argparse_color_formatter import ColorRawTextHelpFormatter
 from colorama import Fore
 
 from cvm.commands.command import Command
-from cvm.commands.use_command import UseCommand
+from cvm.commands.hook_command import HookCommand
 from cvm.commands.install_command import InstallCommand
-from cvm.commands.scan_command import ScanCommand
 from cvm.commands.list_command import ListCommand
-
+from cvm.commands.scan_command import ScanCommand
+from cvm.commands.use_command import UseCommand
+from cvm.helpers.cli import colored_fore
 from cvm.services.cache_service import CacheService
-
 
 COMMAND_NAME = 'cvm'
 COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Author: @game-of-morgan (Morgan Wowk)')
@@ -24,7 +23,8 @@ COMMANDS = {
     UseCommand.NAME: UseCommand,
     InstallCommand.NAME: InstallCommand,
     ScanCommand.NAME: ScanCommand,
-    ListCommand.NAME: ListCommand
+    ListCommand.NAME: ListCommand,
+    HookCommand.NAME: HookCommand
 }
 
 

@@ -1,11 +1,9 @@
 from argparse import Action, Namespace
-from cvm.helpers.cli import green
-
 
 from cvm.commands.command import Command
+from cvm.services.cache_service import CacheService
 from cvm.services.composer_service import ComposerService
 from cvm.services.github_service import GitHubService
-from cvm.services.cache_service import CacheService
 
 
 class ListCommand(Command):
@@ -23,7 +21,6 @@ class ListCommand(Command):
             else:
                 print(f"* {tag['name']}")
 
-
     @staticmethod
     def define_signature(parser: Action):
-        use_parser = parser.add_parser(ListCommand.NAME, help=ListCommand.DESCRIPTION)
+        parser.add_parser(ListCommand.NAME, help=ListCommand.DESCRIPTION)
