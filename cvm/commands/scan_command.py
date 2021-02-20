@@ -1,6 +1,10 @@
 from argparse import Action, Namespace
 
+from colorama import Fore
 from cvm.commands.command import Command
+from cvm.helpers.cli import warning
+from cvm.helpers.fs import find_file_in_parent
+from cvm.services.application_service import ApplicationService
 from cvm.services.composer_service import ComposerService
 from cvm.services.config_service import ConfigService
 from cvm.services.github_service import GitHubService
@@ -11,19 +15,38 @@ class ScanCommand(Command):
     DESCRIPTION = 'If present use .cvm_config from the current or specified directory.'
 
     def exec(self, args: Namespace):
-        if not ConfigService.exists():
-            return
+        version = None
+        config_file = ConfigService.find()
 
-        data = ConfigService.read()
-        if not ConfigService.validate(data):
-            print("echo Invalid cvm config.")
+        if config_file is not None:
+            version = self._check_local(config_file)
+        else:
+            version = self._check_global()
+
+        if version is None:
+            return
 
         github_service = GitHubService('composer', 'composer')
         composer_service = ComposerService(github_service)
 
-        install_path = composer_service.use_version(data['requires'])
+        updated_path = composer_service.use_version(version, False)
 
-        print(f"export PATH=:{install_path}:$PATH; echo Updated path.")
+        print(f"export PATH=\"{updated_path}\"; echo Updated path.;")
+
+    def _check_local(self, config_file: str):
+        data = ConfigService.read(config_file)
+        if not ConfigService.validate(data):
+            msg = warning(".cvm_config format in current directory is invalid.")
+            print(f"echo \"{msg}\"")
+
+            return None
+
+        return data['requires']
+
+    def _check_global(self):
+        application_service = ApplicationService()
+        
+        return application_service.get('global')
 
     @staticmethod
     def define_signature(parser: Action):

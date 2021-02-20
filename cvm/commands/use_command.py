@@ -1,25 +1,28 @@
+import os
+import subprocess
 from argparse import Action, Namespace
 
 from cvm.commands.command import Command
 from cvm.services.composer_service import ComposerService
+from cvm.services.config_service import ConfigService
 from cvm.services.github_service import GitHubService
+from cvm.helpers.cli import info
+from colorama import Fore
 
 
 class UseCommand(Command):
     NAME = 'use'
-    DESCRIPTION = 'Use a specific version of Composer; Defaulting to the latest stable major version when there is a ' \
-                  'lack of specificity (ie. 2). '
+    DESCRIPTION = 'Globally use a specific composer version.'
 
     def exec(self, args: Namespace):
-        desired_version = args.version[0]
+        version = args.version[0]
 
         github_service = GitHubService('composer', 'composer')
         composer_service = ComposerService(github_service)
 
-        existed = composer_service.use_version(desired_version)
-        if not existed:
-            composer_service.install_version(desired_version)
-            composer_service.use_version(desired_version, False)
+        composer_service.use_version(version, True)
+
+        print(f"Global composer version updated to {version}.")
 
     @staticmethod
     def define_signature(parser: Action):
