@@ -8,7 +8,6 @@ from colorama import Fore
 
 from cvm.commands.command import Command
 from cvm.commands.hook_command import HookCommand
-from cvm.commands.install_command import InstallCommand
 from cvm.commands.list_command import ListCommand
 from cvm.commands.scan_command import ScanCommand
 from cvm.commands.use_command import UseCommand
@@ -21,7 +20,6 @@ COMMAND_EPILOG = 'https://github.com/game-of-morgan/cvm\n\nSupport this project 
 
 COMMANDS = {
     UseCommand.NAME: UseCommand,
-    InstallCommand.NAME: InstallCommand,
     ScanCommand.NAME: ScanCommand,
     ListCommand.NAME: ListCommand,
     HookCommand.NAME: HookCommand
@@ -30,11 +28,8 @@ COMMANDS = {
 
 def get_command_by_name(name: str) -> Optional[Command]:
     command = COMMANDS.get(name, None)
-    if command is None:
-        logging.error("Command {} not found".format(name))
-        sys.exit(1)
 
-    return command()
+    return command
 
 
 def main():
@@ -55,4 +50,8 @@ def main():
     args = parser.parse_args()
 
     command = get_command_by_name(args.command)
-    command.exec(args)
+    if command is None:
+        parser.print_help(sys.stdout)
+        return
+
+    command().exec(args)

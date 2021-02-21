@@ -7,6 +7,7 @@ import requests
 
 from cvm.services.cache_service import CacheService
 from cvm.services.github_service import GitHubService
+from cvm.services.application_service import ApplicationService, ComposerSource
 
 
 class ComposerService:
@@ -57,7 +58,7 @@ class ComposerService:
             setup_path.write_bytes(r.content)
         return setup_path
 
-    def install_version(self, tag_name: str, quiet=False) -> pathlib.Path:
+    def install_version(self, tag_name: str, quiet=False) -> str:
         if not self.tag_exists(tag_name):
             logging.error("Tag {} does not exist.".format(tag_name))
             sys.exit(1)
@@ -66,16 +67,28 @@ class ComposerService:
         cache_path = CacheService.make_cache_folder(tag_name)
 
         if ComposerService.cached_version_exists(tag_name):
-            return cache_path
+            return str(cache_path)
 
         cmd = ['php', str(setup_path), f'--install-dir={str(cache_path)}', '--filename=composer', f'--version={tag_name}']
         result = subprocess.run(cmd, stdout=subprocess.PIPE, check=True)
         if not quiet:
             print(result.stdout.decode('utf-8'))
 
-        return cache_path
+        return str(cache_path)
 
-    def use_version(self, tag_name: str) -> str:
-        install_path = self.install_version(tag_name, quiet=True)
+    def use_version(self, tag_name: str, is_global: bool) -> str:
+        bin_path = self.install_version(tag_name, quiet=True)
 
-        return str(install_path)
+        application_service = ApplicationService()
+        application_service.set('current', tag_name)
+
+        if is_global:
+            application_service.set('global', tag_name)
+            application_service.set('source', ComposerSource.Global.value)
+        else:
+            application_service.set('source', ComposerSource.Config.value)
+
+        application_service.save()
+        updated_path = application_service.get_updated_path(bin_path)
+
+        return updated_path
