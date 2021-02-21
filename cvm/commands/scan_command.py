@@ -1,12 +1,14 @@
 from argparse import Action, Namespace
+from typing import Optional
 
+from colorama import Fore
 from cvm.commands.command import Command
+from cvm.helpers.cli import warning
+from cvm.helpers.fs import find_file_in_parent
+from cvm.services.application_service import ApplicationService
 from cvm.services.composer_service import ComposerService
 from cvm.services.config_service import ConfigService
 from cvm.services.github_service import GitHubService
-from cvm.services.application_service import ApplicationService
-from cvm.helpers.cli import warning
-from colorama import Fore
 
 
 class ScanCommand(Command):
@@ -15,9 +17,10 @@ class ScanCommand(Command):
 
     def exec(self, args: Namespace):
         version = None
+        config_file = ConfigService.find()
 
-        if ConfigService.exists():
-            version = self._check_local()
+        if config_file is not None:
+            version = self._check_local(config_file)
         else:
             version = self._check_global()
 
@@ -26,13 +29,12 @@ class ScanCommand(Command):
 
         github_service = GitHubService('composer', 'composer')
         composer_service = ComposerService(github_service)
-
         updated_path = composer_service.use_version(version, False)
 
         print(f"export PATH=\"{updated_path}\"; echo Updated path.;")
 
-    def _check_local(self):
-        data = ConfigService.read()
+    def _check_local(self, config_file: str) -> Optional[str]:
+        data = ConfigService.read(config_file)
         if not ConfigService.validate(data):
             msg = warning(".cvm_config format in current directory is invalid.")
             print(f"echo \"{msg}\"")
@@ -41,7 +43,7 @@ class ScanCommand(Command):
 
         return data['requires']
 
-    def _check_global(self):
+    def _check_global(self) -> Optional[str]:
         application_service = ApplicationService()
         
         return application_service.get('global')

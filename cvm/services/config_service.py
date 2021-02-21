@@ -1,5 +1,8 @@
 import json
 import pathlib
+from typing import Optional
+
+from cvm.helpers.fs import find_file_in_parent
 
 
 class ConfigService:
@@ -11,8 +14,12 @@ class ConfigService:
         return ConfigService.CONFIG_INPUT.exists()
 
     @staticmethod
-    def read():
-        return json.load(ConfigService.CONFIG_INPUT.open('r'))
+    def find() -> Optional[pathlib.Path]:
+        return find_file_in_parent(ConfigService.FILENAME, recursive=True)
+
+    @staticmethod
+    def read(config_file: pathlib.Path):
+        return json.load(config_file.open('r'))
 
     @staticmethod
     def validate(data) -> bool:
