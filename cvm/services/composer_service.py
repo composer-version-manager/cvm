@@ -16,21 +16,14 @@ class ComposerService:
 
     def __init__(self, github_service: GitHubService):
         self.github_service = github_service
-        self.tags = None
 
     def list_tags(self):
-        if self.tags is None:
-            self.tags = self.github_service.list_tags()
-
-        return self.tags
+        return self.github_service.list_tags()
 
     def tag_exists(self, desired_tag: str) -> bool:
-        github_tags = self.list_tags()
-
-        for tag_object in github_tags:
+        for tag_object in self.list_tags():
             if tag_object.get('name') == desired_tag:
                 return True
-
         return False
 
     @staticmethod
