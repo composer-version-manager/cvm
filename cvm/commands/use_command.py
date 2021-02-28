@@ -3,11 +3,10 @@ import subprocess
 from argparse import Action, Namespace
 
 from cvm.commands.command import Command
+from cvm.helpers.cli import info
 from cvm.services.composer_service import ComposerService
 from cvm.services.config_service import ConfigService
 from cvm.services.github_service import GitHubService
-from cvm.helpers.cli import info
-from colorama import Fore
 
 
 class UseCommand(Command):
@@ -22,7 +21,7 @@ class UseCommand(Command):
 
         composer_service.use_version(version, True)
 
-        print(f"Global composer version updated to {version}.")
+        print(info(f"Global composer version updated to {version}."))
 
     @staticmethod
     def define_signature(parser: Action):

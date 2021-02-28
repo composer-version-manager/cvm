@@ -2,12 +2,12 @@ import logging
 import pathlib
 import subprocess
 import sys
+from typing import Optional
 
 import requests
-
+from cvm.services.application_service import ApplicationService, ComposerSource
 from cvm.services.cache_service import CacheService
 from cvm.services.github_service import GitHubService
-from cvm.services.application_service import ApplicationService, ComposerSource
 
 
 class ComposerService:
@@ -69,10 +69,15 @@ class ComposerService:
 
         return str(cache_path)
 
-    def use_version(self, tag_name: str, is_global: bool) -> str:
-        bin_path = self.install_version(tag_name, quiet=True)
-
+    def use_version(self, tag_name: str, is_global: bool) -> Optional[str]:
         application_service = ApplicationService()
+
+        bin_path = self.install_version(tag_name, quiet=True)
+        current_tag_name = application_service.get('current')
+
+        if not is_global and current_tag_name == tag_name:
+            return None
+
         application_service.set('current', tag_name)
 
         if is_global:

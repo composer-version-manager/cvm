@@ -3,7 +3,7 @@ from typing import Optional
 
 from colorama import Fore
 from cvm.commands.command import Command
-from cvm.helpers.cli import warning
+from cvm.helpers.cli import info, warning
 from cvm.helpers.fs import find_file_in_parent
 from cvm.services.application_service import ApplicationService
 from cvm.services.composer_service import ComposerService
@@ -31,7 +31,12 @@ class ScanCommand(Command):
         composer_service = ComposerService(github_service)
         updated_path = composer_service.use_version(version, False)
 
-        print(f"export PATH=\"{updated_path}\"; echo Updated path.;")
+        if not updated_path:
+            return
+        
+        msg = info(f"Using composer version {version}")
+
+        print(f"export PATH=\"{updated_path}\"; echo \"{msg}\";")
 
     def _check_local(self, config_file: str) -> Optional[str]:
         data = ConfigService.read(config_file)

@@ -6,6 +6,7 @@ from typing import Optional
 from argparse_color_formatter import ColorRawTextHelpFormatter
 from colorama import Fore
 
+from cvm.commands.cache_command import CacheCommand
 from cvm.commands.command import Command
 from cvm.commands.hook_command import HookCommand
 from cvm.commands.list_command import ListCommand
@@ -15,14 +16,15 @@ from cvm.helpers.cli import colored_fore
 from cvm.services.cache_service import CacheService
 
 COMMAND_NAME = 'cvm'
-COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Author: @game-of-morgan (Morgan Wowk)')
+COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Authors: @game-of-morgan (Morgan Wowk), @ubaniak (Bhavek Budhia)')
 COMMAND_EPILOG = 'https://github.com/game-of-morgan/cvm\n\nSupport this project by giving it a GitHub star ⭐️'
 
 COMMANDS = {
     UseCommand.NAME: UseCommand,
     ScanCommand.NAME: ScanCommand,
     ListCommand.NAME: ListCommand,
-    HookCommand.NAME: HookCommand
+    HookCommand.NAME: HookCommand,
+    CacheCommand.NAME: CacheCommand
 }
 
 
