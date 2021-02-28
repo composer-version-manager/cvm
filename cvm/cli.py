@@ -57,3 +57,6 @@ def main():
         return
 
     command().exec(args)
+
+if __name__ == '__main__':
+    main()

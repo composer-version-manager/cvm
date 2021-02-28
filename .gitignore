@@ -9,3 +9,8 @@ Composer_Version_Manager.egg-info
 build
 dist
 .DS_Store
+
+# Dist
+*.spec
+build/
+dist/
