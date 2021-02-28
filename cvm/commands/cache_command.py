@@ -9,7 +9,7 @@ from cvm.services.github_service import GitHubService
 
 class CacheCommand(Command):
     NAME = 'cache:clear'
-    DESCRIPTION = 'Cleared cached composer tags.'
+    DESCRIPTION = 'Clear cached composer tags.'
 
     def exec(self, args: Namespace):
         try:
