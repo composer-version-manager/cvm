@@ -8,7 +8,7 @@ from cvm.services.github_service import GitHubService
 
 class ListCommand(Command):
     NAME = 'list'
-    DESCRIPTION = 'Print a list of composer versions'
+    DESCRIPTION = 'Print a list of composer versions.'
 
     def exec(self, args: Namespace):
         github_service = GitHubService('composer', 'composer')
