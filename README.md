@@ -20,7 +20,13 @@ Choose one of the options below to install cvm.
 
 ```bash
 brew update
-brew install composer-version-manager/cvm
+brew install composer-version-manager/cvm/cvm
+```
+
+**Note:** Watch for symlink errors. If you already have an existing `Python3` installation you may be required to run the following command:
+
+```bash
+brew link --overwrite cvm
 ```
 
 ### Chocolatey (Windows)
