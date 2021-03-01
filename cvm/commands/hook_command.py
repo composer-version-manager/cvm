@@ -2,6 +2,7 @@ from argparse import Action, Namespace
 
 from cvm.commands.command import Command
 from cvm.services.shell_service import ShellService
+from cvm.services.application_service import ApplicationService
 
 
 class HookCommand(Command):
@@ -15,6 +16,9 @@ class HookCommand(Command):
         shell = shell_service.get_shell_by_name(target)
 
         hook = shell.get_hook()
+
+        application_service = ApplicationService()
+        application_service.boot()
 
         print(hook)
 

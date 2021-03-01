@@ -52,6 +52,10 @@ class ApplicationService:
 
     def _write(self):
         ApplicationService.APP_FILE_PATH.write_text(json.dumps(self._app))
+    
+    def boot(self):
+        self.set('current', "")
+        self.save()
 
     def app(self) -> dict:
         return self._app
