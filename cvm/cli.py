@@ -17,7 +17,7 @@ from cvm.services.cache_service import CacheService
 
 COMMAND_NAME = 'cvm'
 COMMAND_DESC = 'Composer Version Manager\n' + colored_fore(Fore.WHITE, 'Authors: @game-of-morgan (Morgan Wowk), @ubaniak (Bhavek Budhia)')
-COMMAND_EPILOG = 'https://github.com/game-of-morgan/cvm\n\nSupport this project by giving it a GitHub star ⭐️'
+COMMAND_EPILOG = 'https://github.com/composer-version-manager/cvm\n\nSupport this project by giving it a GitHub star ⭐️'
 
 COMMANDS = {
     UseCommand.NAME: UseCommand,
