@@ -65,7 +65,7 @@ Create a `.cvm_config` in any directory specifying the composer version you woul
 
 ```bash
 cd my-project
-echo '2.0.11' > .cvm_config
+echo '{"requires":"2.0.11"}' > .cvm_config
 ```
 
 This file can be committed to your source control.
