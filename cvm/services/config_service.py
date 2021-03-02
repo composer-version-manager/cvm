@@ -18,8 +18,11 @@ class ConfigService:
         return find_file_in_parent(ConfigService.FILENAME, recursive=True)
 
     @staticmethod
-    def read(config_file: pathlib.Path):
-        return json.load(config_file.open('r'))
+    def read(config_file: pathlib.Path) -> Optional[dict]:
+        try:
+            return json.load(config_file.open('r'))
+        except ValueError:
+            return None
 
     @staticmethod
     def validate(data) -> bool:

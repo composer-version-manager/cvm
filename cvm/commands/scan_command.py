@@ -40,7 +40,7 @@ class ScanCommand(Command):
 
     def _check_local(self, config_file: str) -> Optional[str]:
         data = ConfigService.read(config_file)
-        if not ConfigService.validate(data):
+        if not data or not ConfigService.validate(data):
             msg = warning(".cvm_config format in current directory is invalid.")
             print(f"echo \"{msg}\"")
 
